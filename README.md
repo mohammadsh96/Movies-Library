@@ -4,7 +4,7 @@
 
 ## WRRC
 
-![WRRC](https://imgur.com/yDjlpdn)
+![WRRC](assests/wrrc.jpg)
 ## Overview
 
 ## Getting Started
