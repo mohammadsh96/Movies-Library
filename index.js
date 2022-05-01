@@ -7,8 +7,7 @@ const movieData =require("./data.json");
  const apikey = process.env.API_KEY;
  const pg =require (`pg`);
  const client =new pg.Client(url);
-// const{Client}= require(`pg`);
-// const client =new Client(url) ;
+
  var bodyparser = require('body-parser');
 const app = express();
 const port = 3001 ;
