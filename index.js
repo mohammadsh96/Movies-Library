@@ -27,7 +27,7 @@ app.get("/favorite", HandlefavoritePage);
 app.get("/changes", handlechange);
 app.get("/dicover", handlediscover);
 app.post("/addmovie", handleadd);
-app.get("/getmovie",handleGetmovie);
+app.get("/getmovies",handleGetmovie);
 
 app.use(cors());
 
