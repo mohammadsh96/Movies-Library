@@ -11,7 +11,7 @@ const movieData =require("./data.json");
 // const client =new Client(url) ;
  var bodyparser = require('body-parser');
 const app = express();
-const port = 3001 ;
+const port = 3017;
 const cors = require (`cors`);
 const req = require("express/lib/request");
 const Client = require("pg/lib/client");
@@ -28,7 +28,10 @@ app.get("/changes", handlechange);
 app.get("/dicover", handlediscover);
 app.post("/addmovie", handleadd);
 app.get("/getmovies",handleGetmovie);
-
+//app.post("/addnewdata" , handleAddNew);
+app.put("/UPDATE/:id" , handleUpdate);
+app.delete("/DELETE/:id" , handleDelete);
+app.get("/getMovie/:id" , handleGetMovieId);
 app.use(cors());
 
 // app.use(express.json());
@@ -36,6 +39,56 @@ app.use(cors());
 
 
 //functions
+function  handleGetMovieId(req ,res){
+const id = req.params.id;
+let value =[id]
+    let sql = `SELECT * from movie where id =$1  ;`
+    client.query(sql,value).then((results)=>{
+    
+        // console.log(results);
+        res.send(results.rows);
+    }).catch(error => {
+        res.send("error");
+    })
+    }    
+
+
+
+function handleDelete (req,res)
+{
+    const newID = req.params.id;
+    let value =[newID];
+let sql = `DELETE FROM movie WHERE id = $1;`
+client.query(sql,value).then(result=>{
+    // console.log(result.rows);
+    res.send("movie deleted ");
+}).catch(error=>{
+    res.send("not found");
+})
+
+
+}
+function handleUpdate (req ,res){
+    const newID = req.params.id;
+const {id ,title , time ,summary}=req.body;
+let sql= `UPDATE movie
+SET id = $1, 
+    title = $2, time = $3,summary = $4 where id =$5 RETURNING*; `
+let values =[id,title,time,summary,newID];
+client.query(sql,values).then(result=>{
+    console.log(result.rows);
+    res.send(result.rows);
+}).catch(error=>{
+    res.send("not found");
+})
+
+}
+// function handleAddNew (req ,res ){
+
+
+
+
+// }
 function handleSearch (req ,res){
 
 console.log(req.query.moviename);
@@ -117,18 +170,21 @@ axios.get(url).then(result=>{
     }
 
 function handleadd(req ,res ){
-
+    let id =req.body.id;
     let title = req.body.title;
     let time =req.body.time;
     let summary =req.body.summary;
-   let values =[title ,time ,summary];
-   let sql = "INSERT INTO movie (title , time ,summary) VALUES($1,$2,$3)RETURNING*;" 
+    
+   let values =[id ,title ,time ,summary ];
+   let sql = "INSERT INTO movie (id ,title , time ,summary ) VALUES($1,$2,$3,$4)RETURNING*;" 
        client.query(sql,values).then(results=>{
 console.log(results.rows);
 // return res.send("is on ");
 return res.status(201).json(results.rows[0]);
 
-       }).catch()
+       }).catch(error => {
+           res.send("it is error");
+       })
 // res.send("req is sent  need to fill body ");
 // console.log(req.body);
 

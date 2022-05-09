@@ -4,7 +4,7 @@
 
 ## WRRC
 
-![WRRC](assests/wrrc3.jpg)
+![WRRC](assests/task 14 wrrc.jpg)
 ## Overview
 
 ## Getting Started
